@@ -12,7 +12,7 @@ public class LoginController {
     public String login(@PathVariable("loginId") String loginId, String password){
 
 
-
+        System.out.println("aa");
 
 
 
