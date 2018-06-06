@@ -9,20 +9,18 @@ $(function () {
             alert("用户名或密码不能为空");
             return;
         }
-        var url = "/user/login/"+userName
+        var url = "/user/login/"+userName;
         $.ajax({
             url: url,
-            data: JSON.stringify(
-                {"username": userName, "password": passWord}
-            ),//参数列表,
-            type: "POST",
-            contentType:"application/json",
+            data: {password:passWord},//参数列表,
+            type: "post",
+
             dataType:"json",
             success: function (result) {
                // alert("success");
                 if(result.flag=='success'){
 
-                    location.href=""
+                    location.href="/htm/index.html"
                 }else{
                     alert('用户名或密码错误');
                 }

@@ -30,12 +30,15 @@ public class UserController {
 
     @RequestMapping(value = "/login/{username}",method = RequestMethod.POST)
     public Object login(@PathVariable("username") String username, String password, HttpServletRequest request){
+        //password = request.getParameter("password");
+        request.getParameterMap()
         User user = userRepository.findByLoginNameAndLoginPwd(username,password);
 
         Map<String,Object> map = new HashMap<String,Object>();
         if(user ==null){
             map.put("flag","failed");
         }else{
+            request.getSession().setAttribute("loginUser",user);
             map.put("flag","success");
         }
         return map;
