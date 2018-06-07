@@ -5,10 +5,12 @@ $(function () {
     $("#login").click(function () {
         var userName = $("#username").val();
         var passWord = $("#password").val();
+        /*
         if(userName ==null || userName =='' || passWord ==null || passWord==''){
-            alert("用户名或密码不能为空");
+            //alert("用户名或密码不能为空");
+            layer.msg("用户名或密码不能为空");
             return;
-        }
+        }*/
         var url = "/user/login/"+userName;
         $.ajax({
             url: url,
