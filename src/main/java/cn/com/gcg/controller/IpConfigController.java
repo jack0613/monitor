@@ -43,10 +43,12 @@ public class IpConfigController {
                 List<Predicate> predicates = new ArrayList<Predicate>();
                 if(ipConfig!=null){
                     if(ipConfig.getIpAddr() !=null && !"".equals(ipConfig.getIpAddr())){
-                        Predicate predicate = cb.equal(root.get("ipAddr"),ipConfig.getIpAddr());
+                       // Predicate predicate = cb.equal(root.get("ipAddr"),ipConfig.getIpAddr());
+                        Predicate predicate = cb.like(root.get("ipAddr").as(String.class),"%"+ipConfig.getIpAddr()+"%");
+
                         predicates.add(predicate);
                     }
-                    if(ipConfig.getIpName() !=null && !"".equals(ipConfig.getIpAddr())){
+                    if(ipConfig.getIpName() !=null && !"".equals(ipConfig.getIpName())){
                         Predicate predicate = cb.like(root.get("ipName").as(String.class),"%"+ipConfig.getIpName()+"%");
 
                         predicates.add(predicate);
@@ -56,7 +58,7 @@ public class IpConfigController {
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         };
-        Pageable pageable = new PageRequest(page,size, Sort.Direction.DESC,"id");
+        Pageable pageable = new PageRequest(page,size, Sort.Direction.ASC,"id");
         Page<IpConfig> pages = ipConfigRepository.findAll(specification, pageable);
 
 
@@ -84,9 +86,10 @@ public class IpConfigController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/ip/{id}")
-    public IpConfig getById(@PathVariable("id") Long id){
-        return ipConfigRepository.getOne(id);
+    @RequestMapping(value="/ip/getOne/{id}")
+    public Object getById(@PathVariable("id") Long id){
+        IpConfig ipConfig = ipConfigRepository.getOne(id);
+        return ipConfig;
     }
 
     /**
@@ -95,7 +98,7 @@ public class IpConfigController {
      * @return
      */
     @RequestMapping("/ip/update")
-    public IpConfig upateIpCofig(IpConfig ipConfig){
+    public Object upateIpCofig(IpConfig ipConfig){
         return ipConfigRepository.save(ipConfig);
     }
 

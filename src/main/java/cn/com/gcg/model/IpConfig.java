@@ -4,12 +4,15 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @ToString
 @Data
 @Entity
 @Table(name = "monitor_ip")
-public class IpConfig {
+public class IpConfig implements  Serializable {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
