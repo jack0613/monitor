@@ -22,7 +22,7 @@ $(function () {
                // alert("success");
                 if(result.flag=='success'){
 
-                    location.href="/htm/index.html"
+                    location.href="/htm/index.html";
                 }else{
                     alert('用户名或密码错误');
                 }
