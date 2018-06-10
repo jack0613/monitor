@@ -46,21 +46,29 @@ function sendSearch(url ,params){
                     $row.append(" <td>"+content[i].id+"</td>");
                     $row.append(" <td>"+content[i].ipName+"</td>");
                     $row.append(" <td>"+content[i].ipAddr+"</td>");
-                    $row.append("<td>"+content[i].enabled+"</td>");
-                    $row.append("<td>正常</td>");
-                    $row.append("<td>2018-09232</td>");
+                    var enstr ="";
+                    if(content[i].enabled==0){
+                        enstr="启用";
+                    }else{
+                        enstr="禁用";
+                    }
+                    var st ="";
+                    if( content[i].status==0){
+                        st="不正常";
+                    }else{
+                        st="正常";
+                    }
 
+                    $row.append("<td>"+enstr+"</td>");
+                    $row.append("<td>"+st+"</td>");
+                    $row.append("<td>"+(content[i].lastOnlinetime==null?'':content[i].lastOnlinetime)+"</td>");
+
+                    var editUrl = 'ip-edit.html?id='+content[i].id;
                     $row.append("<td class=\"td-manage\">\n" +
-                        "              <a onclick=\"member_stop(this,'10001')\" href=\"javascript:;\"  title=\"启用\">\n" +
-                        "                <i class=\"layui-icon\">&#xe601;</i>\n" +
-                        "              </a>\n" +
-                        "              <a title=\"编辑\"  onclick=\"x_admin_show('编辑','member-edit.html',600,400)\" href=\"javascript:;\">\n" +
+                        "              <a title=\"编辑\"  onclick=\"x_admin_show('编辑','"+editUrl+"',600,400)\" href=\"javascript:;\">\n" +
                         "                <i class=\"layui-icon\">&#xe642;</i>\n" +
                         "              </a>\n" +
-                        "              <a onclick=\"x_admin_show('修改密码','member-password.html',600,400)\" title=\"修改密码\" href=\"javascript:;\">\n" +
-                        "                <i class=\"layui-icon\">&#xe631;</i>\n" +
-                        "              </a>\n" +
-                        "              <a title=\"删除\" onclick=\"member_del(this,'要删除的id')\" href=\"javascript:;\">\n" +
+                        "              <a title=\"删除\" onclick=\"deleteIpInfo(this,'"+content[i].id+"')\" href=\"javascript:;\">\n" +
                         "                <i class=\"layui-icon\">&#xe640;</i>\n" +
                         "              </a>\n" +
                         "            </td>");
@@ -144,3 +152,86 @@ function handlePage(result){
 
 
 }
+
+
+function addIpInfo(){
+    var layer = layui.layer;
+    var ipAddr = $("#ipAddr").val();
+    var ipName = $("#ipName").val();
+    var enabled= $("#enabled").val();
+    if(ipAddr ==null || ''==ipAddr || ipName ==null || ''==ipName){
+        alert("请填写IP信息");
+        return;
+    }
+   // var b= validateIp(ipAddr);
+   //  if(!b){
+   //      alert("请填写正确的IP信息");
+   //      return ;
+   //  }
+
+    var params = {ipAddr:ipAddr,ipName:ipName,enabled:enabled};
+
+    var url="/ip/save";
+    $.ajax({
+        url: url,
+        data: params,//参数列表,
+        type: "post",
+        dataType:"json",
+        success: function (result) {
+            if(result !=null){
+                layer.alert("增加成功", {icon: 6},function () {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    //关闭当前frame
+                    parent.layer.close(index);
+                });
+
+            }
+        }
+    });
+
+
+}
+
+function ipInfoUpdate(){
+    var ipAddr= $("#ipAddr").val();
+    var ipName=$("#ipName").val();
+    var enabled = $("#enabled").val();
+    var id = $("#id").val();
+    var params ={id:id,ipAddr:ipAddr,ipName:ipName,enabled:enabled};
+    var url ="/ip/update";
+    $.ajax({
+        url: url,
+        data: params,//参数列表,
+        type: "post",
+        dataType:"json",
+        success: function (result) {
+            if(result !=null){
+                layer.alert("修改成功", {icon: 6},function () {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    //关闭当前frame
+                    parent.layer.close(index);
+                });
+            }
+
+        }
+    })
+
+
+}
+
+
+function deleteIpInfo(id){
+    var layer= layui.layer;
+    layer.confirm('确认要删除吗？',function(index){
+        //发异步删除数据
+        //$(obj).parents("tr").remove();
+     //   var
+        layer.msg('已删除!',{icon:1,time:1000});
+    });
+}
+function validateIp(ip) {
+    var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+    return reg.test(ip);
+
+}
+

@@ -88,6 +88,8 @@ public class IpConfigController {
      */
     @RequestMapping(value="/ip/getOne/{id}")
     public Object getById(@PathVariable("id") Long id){
+        //getOne 懒加载
+        //findOne
         IpConfig ipConfig = ipConfigRepository.getOne(id);
         return ipConfig;
     }
@@ -99,7 +101,16 @@ public class IpConfigController {
      */
     @RequestMapping("/ip/update")
     public Object upateIpCofig(IpConfig ipConfig){
-        return ipConfigRepository.save(ipConfig);
+
+        IpConfig ip = ipConfigRepository.findOne(ipConfig.getId());
+        if(ip !=null){
+            ip.setIpAddr(ipConfig.getIpAddr());
+            ip.setIpName(ipConfig.getIpName());
+            ip.setEnabled(ipConfig.getEnabled());
+            return ipConfigRepository.save(ip);
+        }
+
+        return null;
     }
 
     /**

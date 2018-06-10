@@ -1,18 +1,18 @@
 package cn.com.gcg.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
-@ToString
+import java.util.Date;
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
+//@ToString
 @Data
 @Entity
 @Table(name = "monitor_ip")
-public class IpConfig implements  Serializable {
-
-
+public  class IpConfig implements  Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +29,11 @@ public class IpConfig implements  Serializable {
 
     @Column(name="areacode")
     private String areacode;
+
+    @Column(name="status")
+    private Integer status;
+
+    @Column(name="last_onlinetime")
+    private String lastOnlinetime;
 
 }
