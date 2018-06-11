@@ -40,10 +40,10 @@ function sendSearch(url ,params){
                 for(var i=0;i<content.length;i++){
 
                     var $row= $("<tr></tr>");
-                    $row.append(" <td>\n" +
+                  /*  $row.append(" <td>\n" +
                         "              <div class=\"layui-unselect layui-form-checkbox\" lay-skin=\"primary\" data-id='2'><i class=\"layui-icon\">&#xe605;</i></div>\n" +
-                        "            </td>");
-                    $row.append(" <td>"+content[i].id+"</td>");
+                        "            </td>");*/
+                    $row.append(" <td>"+(i+1)+"</td>");
                     $row.append(" <td>"+content[i].ipName+"</td>");
                     $row.append(" <td>"+content[i].ipAddr+"</td>");
                     var enstr ="";
@@ -208,6 +208,7 @@ function ipInfoUpdate(){
             if(result !=null){
                 layer.alert("修改成功", {icon: 6},function () {
                     var index = parent.layer.getFrameIndex(window.name);
+                    parent.location.reload();
                     //关闭当前frame
                     parent.layer.close(index);
                 });
@@ -220,13 +221,24 @@ function ipInfoUpdate(){
 }
 
 
-function deleteIpInfo(id){
+function deleteIpInfo(obj,id){
     var layer= layui.layer;
     layer.confirm('确认要删除吗？',function(index){
-        //发异步删除数据
-        //$(obj).parents("tr").remove();
-     //   var
-        layer.msg('已删除!',{icon:1,time:1000});
+
+        var url="/ip/delete/"+id;
+        $.ajax({
+            url: url,
+            type: "post",
+            dataType:"json",
+            success: function (result) {
+              if(result){
+                  location.reload();
+                  layer.msg('已删除!', {icon: 1, time: 1000});
+              }
+
+            }
+        })
+
     });
 }
 function validateIp(ip) {
