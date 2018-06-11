@@ -14,6 +14,7 @@ import java.util.Date;
 @Table(name = "monitor_ip")
 public  class IpConfig implements  Serializable {
 
+    private static final long serialVersionUID = -2806739665446705219L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

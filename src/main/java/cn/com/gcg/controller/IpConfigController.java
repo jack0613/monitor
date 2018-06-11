@@ -117,7 +117,9 @@ public class IpConfigController {
         删除IP信息
      */
     @RequestMapping("/ip/delete/{id}")
-    public void deleteIpConfig(@PathVariable("id") Long id){
+    public boolean deleteIpConfig(@PathVariable("id") Long id){
          ipConfigRepository.delete(id);
+
+         return true;
     }
 }
