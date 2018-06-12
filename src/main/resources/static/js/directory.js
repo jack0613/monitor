@@ -4,7 +4,7 @@ $(function(){
 
         var pathName = $("#pathName").val();
         var fileName = $("#fileName").val();
-        var params={pathName:pathName,fileName:fileName};
+        var params={filePath:pathName,fileName:fileName};
         var url="/dir/dirlist";
         sendSearch(url,params);
     });
@@ -15,7 +15,7 @@ function pageSearch(cpg) {
 
     var pathName = $("#pathName").val();
     var fileName = $("#fileName").val();
-    var params={pathName:pathName,fileName:fileName,page:cpg};
+    var params={filePath:pathName,fileName:fileName,page:cpg};
     var url="/dir/dirlist";
     sendSearch(url,params);
 
@@ -43,11 +43,12 @@ function sendSearch(url ,params){
                     $row.append(" <td>\n" +
                         "              <div class=\"layui-unselect layui-form-checkbox\" lay-skin=\"primary\" data-id='2'><i class=\"layui-icon\">&#xe605;</i></div>\n" +
                         "            </td>");
-                    $row.append(" <td>"+content[i].id+"</td>");
-                    $row.append(" <td>"+content[i].ipName+"</td>");
-                    $row.append(" <td>"+content[i].ipAddr+"</td>");
+                    $row.append(" <td>"+ (i+1) +"</td>");
+                    $row.append(" <td>"+content[i].filePath+"</td>");
+                    $row.append(" <td>"+content[i].fileName+"</td>");
+                    $row.append(" <td>"+content[i].monitorTime+"</td>");
                     var enstr ="";
-                    if(content[i].enabled==0){
+                    if(content[i].enabled==1){
                         enstr="启用";
                     }else{
                         enstr="禁用";
@@ -55,7 +56,7 @@ function sendSearch(url ,params){
                     var st ="";
                     if( content[i].status==0){
                         st="不正常";
-                    }else{
+                    }else if( content[i].status==1){
                         st="正常";
                     }
 
@@ -63,18 +64,16 @@ function sendSearch(url ,params){
                     $row.append("<td>"+st+"</td>");
                     $row.append("<td>"+(content[i].lastOnlinetime==null?'':content[i].lastOnlinetime)+"</td>");
 
-                    var editUrl = 'ip-edit.html?id='+content[i].id;
+                    var editUrl = 'directory-edit.html?id='+content[i].id;
                     $row.append("<td class=\"td-manage\">\n" +
                         "              <a title=\"编辑\"  onclick=\"x_admin_show('编辑','"+editUrl+"',600,400)\" href=\"javascript:;\">\n" +
                         "                <i class=\"layui-icon\">&#xe642;</i>\n" +
                         "              </a>\n" +
-                        "              <a title=\"删除\" onclick=\"deleteIpInfo(this,'"+content[i].id+"')\" href=\"javascript:;\">\n" +
+                        "              <a title=\"删除\" onclick=\"deleteDirInfo('"+content[i].id+"')\" href=\"javascript:;\">\n" +
                         "                <i class=\"layui-icon\">&#xe640;</i>\n" +
                         "              </a>\n" +
                         "            </td>");
                     $row.appendTo($("#tbd"));
-
-
                 }
 
             }
@@ -93,7 +92,6 @@ function dataLoad(){
     var url="/dir/dirlist";
     var params={};
     sendSearch(url,params);
-
 }
 
 
@@ -120,16 +118,11 @@ function handlePage(result){
                         $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick='pageSearch("+i+")'>"+i+"</a>");
                     }
                 }
-
-
-
             }else{
                 $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick=\"pageSearch("+(currentPage-1)+")\">currentPage-1</a>");
                 $div.append(" <a class=\"num\" class=\"current\" href=\"javascript:void(0)\" >currentPage</a>") ;
                 $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick=\"pageSearch("+(currentPage-1)+")\">currentPage+1</a>");
             }
-
-
 
         }else{
             for(var i=1;i<=pageTotal;i++){
@@ -138,9 +131,7 @@ function handlePage(result){
                 }else{
                     $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick='pageSearch("+i+")'>"+i+"</a>");
                 }
-
             }
-
         }
         if(islastPage){//
             $div.append("  <a class=\"next\" href=\"javascript:void(0)\">&gt;&gt;</a>");
@@ -154,13 +145,18 @@ function handlePage(result){
 }
 
 
-function addIpInfo(){
+function addDirInfo(){
     var layer = layui.layer;
-    var ipAddr = $("#ipAddr").val();
-    var ipName = $("#ipName").val();
+    var pathName = $("#pathName").val();
+    var fileName = $("#fileName").val();
+    var monitorTime= $("#monitorTime").val();
     var enabled= $("#enabled").val();
-    if(ipAddr ==null || ''==ipAddr || ipName ==null || ''==ipName){
-        alert("请填写IP信息");
+    if(pathName == null || '' == pathName || fileName == null || '' == fileName){
+        alert("请填写目录信息");
+        return;
+    }
+    if(monitorTime == null || monitorTime == ""){
+        alert("请填写时间间隔信息");
         return;
     }
    // var b= validateIp(ipAddr);
@@ -169,9 +165,9 @@ function addIpInfo(){
    //      return ;
    //  }
 
-    var params = {ipAddr:ipAddr,ipName:ipName,enabled:enabled};
+    var params = {filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled};
 
-    var url="/ip/save";
+    var url="/dir/save";
     $.ajax({
         url: url,
         data: params,//参数列表,
@@ -180,6 +176,8 @@ function addIpInfo(){
         success: function (result) {
             if(result !=null){
                 layer.alert("增加成功", {icon: 6},function () {
+                    //重新加载列表
+                    window.parent.location.reload();
                     var index = parent.layer.getFrameIndex(window.name);
                     //关闭当前frame
                     parent.layer.close(index);
@@ -192,13 +190,14 @@ function addIpInfo(){
 
 }
 
-function ipInfoUpdate(){
-    var ipAddr= $("#ipAddr").val();
-    var ipName=$("#ipName").val();
+function dirInfoUpdate(){
+    var pathName= $("#pathName").val();
+    var fileName=$("#fileName").val();
     var enabled = $("#enabled").val();
+    var monitorTime = $("#monitorTime").val();
     var id = $("#id").val();
-    var params ={id:id,ipAddr:ipAddr,ipName:ipName,enabled:enabled};
-    var url ="/ip/update";
+    var params ={filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,id:id};
+    var url ="/dir/update";
     $.ajax({
         url: url,
         data: params,//参数列表,
@@ -206,6 +205,8 @@ function ipInfoUpdate(){
         dataType:"json",
         success: function (result) {
             if(result !=null){
+                //重新加载列表
+                window.parent.location.reload();
                 layer.alert("修改成功", {icon: 6},function () {
                     var index = parent.layer.getFrameIndex(window.name);
                     //关闭当前frame
@@ -220,18 +221,64 @@ function ipInfoUpdate(){
 }
 
 
-function deleteIpInfo(id){
+function deleteDirInfo(id){
     var layer= layui.layer;
     layer.confirm('确认要删除吗？',function(index){
-        //发异步删除数据
-        //$(obj).parents("tr").remove();
-     //   var
-        layer.msg('已删除!',{icon:1,time:1000});
+        var url="/dir/delete/"+id;
+        $.ajax({
+            url: url,
+            type: "post",
+            dataType:"json",
+            success: function (result) {
+                if(result){
+                    location.reload();
+                    layer.msg('已删除!', {icon: 1, time: 1000});
+                }
+
+            }
+        })
+
     });
 }
-function validateIp(ip) {
-    var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
-    return reg.test(ip);
+
+function pathNameRule(){
+    //layer.alert(", {icon: 0},function () {});
+
+    layer.open({
+        type: 1,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['420px', '240px'], //宽高
+        content: '<html><body><h2>ftp路径规则：ftp://127.0.01{^}21{^}test{^}test{^}/directory</br>共享文件规则：\\\\127.0.0.1\\directory</br>本地磁盘：d:\\\\directory\\</h2></body></html>'
+    });
 
 }
+
+function fileNameRule(){
+    //layer.alert(", {icon: 0},function () {});
+
+    layer.open({
+        type: 1,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['420px', '240px'], //宽高
+        content: '<html><body><h2>文件名规则：【#yyyy#】年【#MM#】年【#dd#】短信.txt 根据系统运行时间将被转换为 2018年05月01日短信.txt' +
+        '</br>可用标签：【#yyyy#】 2018(年份) 【#MM#】 05 (双位月份) 【#M#】 5 (单位月份) 【#dd#】 01(双位日) 【#d#】 1(单位日) 【#HH#】 01(双位小时) 【#H#】 1(单位小时)' +
+        ' 【#mm#】 01(双位分钟) 【#m#】 1(单位分钟) ' +
+        '</h2></body></html>'
+    });
+
+}
+
+function timeRule(){
+    layer.open({
+        type: 1,
+        skin: 'layui-layer-rim', //加上边框
+        area: ['420px', '240px'], //宽高
+        content: '<html><body><h2>时间规则：秒 分钟 小时 日期 月份 星期 年（可选）' +
+        '</br>例如：</br>"0 0 12 * * ?" 每天中午12点触发</br>"0 0/5 14 * * ?" 在每天下午2点到下午2:55期间的每5分钟触发</br>"0 0/5 14,18 * * ?" 在每天下午2点到2:55期间和下午6点到6:55期间的每5分钟触发</br>' +
+        '"0 * 14 * * ?" 在每天下午2点到下午2:59期间的每1分钟触发 ' +
+        '</h2></body></html>'
+    });
+
+}
+
 

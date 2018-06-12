@@ -217,10 +217,13 @@ public class ProcessEvtThread extends Thread {
 						//Jack 设置播放语音 重复播放 进程无法停止
 						//int i32PlayFileHandle = BriSDKLib.QNV_PlayFile(0, BriSDKLib.QNV_PLAY_FILE_START, 0, BriSDKLib.PLAYFILE_MASK_REPEAT, projectPath + "\\static\\wav\\warn.wav");
 
-						//Jack 设置播放语音 播放一次
-						int i32PlayFileHandle = BriSDKLib.QNV_PlayFile(0, BriSDKLib.QNV_PLAY_FILE_START, 0, BriSDKLib.PLAYFILE_MASK_PAUSE, projectPath + "\\static\\wav\\warn.wav");
+						//Jack 设置播放语音 默认暂停 播放一次
+						int i32PlayFileHandle = BriSDKLib.QNV_PlayFile(0, BriSDKLib.QNV_PLAY_FILE_START, 0, BriSDKLib.PLAYFILE_MASK_PAUSE, projectPath + "\\static\\wav\\ipwarn.wav");
 
-						if (i32PlayFileHandle < 0) {
+						//Jack 设置恢复播放语音
+						int status = BriSDKLib.QNV_PlayFile(0,BriSDKLib.QNV_PLAY_FILE_RESUME,i32PlayFileHandle,0,"");
+
+						if (status < 0) {
 							System.out.println("Jack-----:拨号后语音播放失败");
 						} else {
 							System.out.println("Jack-----:拨号后语音播放成功");
