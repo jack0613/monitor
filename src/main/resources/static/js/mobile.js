@@ -2,10 +2,10 @@ $(function(){
 
     $("#searchFilter").click(function(){
 
-        var ipAddr = $("#ipAddr").val();
-        var ipName = $("#ipName").val();
-        var params={ipAddr:ipAddr,ipName:ipName};
-        var url="/ip/iplist";
+        var phoneName = $("#mobileName").val();
+        var phone = $("#mobileNumber").val();
+        var params={phoneName:phoneName,phone:phone};
+        var url="/mobile/mobileList";
         sendSearch(url,params);
     });
 
@@ -13,10 +13,10 @@ $(function(){
 
 function pageSearch(cpg) {
 
-    var ipAddr = $("#ipAddr").val();
-    var ipName = $("#ipName").val();
-    var params={ipAddr:ipAddr,ipName:ipName,page:cpg};
-    var url="/ip/iplist";
+    var phoneName = $("#mobileName").val();
+    var phone = $("#mobileNumber").val();
+    var params={phoneName:phoneName,phone:phone,page:cpg};
+    var url="/mobile/mobileList";
     sendSearch(url,params);
 
 }
@@ -44,33 +44,29 @@ function sendSearch(url ,params){
                         "              <div class=\"layui-unselect layui-form-checkbox\" lay-skin=\"primary\" data-id='2'><i class=\"layui-icon\">&#xe605;</i></div>\n" +
                         "            </td>");*/
                     $row.append(" <td>"+(i+1)+"</td>");
-                    $row.append(" <td>"+content[i].ipName+"</td>");
-                    $row.append(" <td>"+content[i].ipAddr+"</td>");
+                    $row.append(" <td>"+content[i].phone+"</td>");
+                    $row.append(" <td>"+content[i].phoneName+"</td>");
                     var enstr ="";
-                    if(content[i].enabled==1){
-                        enstr="启用";
-                    }else{
+                    if(content[i].enabled==0){
                         enstr="禁用";
-                    }
-                    var st ="";
-                    if( content[i].status==0){
-                        st="不正常";
                     }else{
-                        st="正常";
+                        enstr="启用";
                     }
+
 
                     $row.append("<td>"+enstr+"</td>");
-                    $row.append("<td>"+st+"</td>");
-                    $row.append("<td>"+(content[i].lastOnlinetime==null?'':content[i].lastOnlinetime)+"</td>");
 
-                    var editUrl = 'ip-edit.html?id='+content[i].id;
+
+
+                    var editUrl = 'mobile-edit.html?id='+content[i].id;
                     $row.append("<td class=\"td-manage\">\n" +
                         "              <a title=\"编辑\"  onclick=\"x_admin_show('编辑','"+editUrl+"',600,400)\" href=\"javascript:;\">\n" +
                         "                <i class=\"layui-icon\">&#xe642;</i>\n" +
                         "              </a>\n" +
-                        "              <a title=\"删除\" onclick=\"deleteIpInfo(this,'"+content[i].id+"')\" href=\"javascript:;\">\n" +
+                        "              <a title=\"删除\" onclick=\"deleteMobileInfo(this,'"+content[i].id+"')\" href=\"javascript:;\">\n" +
                         "                <i class=\"layui-icon\">&#xe640;</i>\n" +
                         "              </a>\n" +
+                        "&nbsp;<button class=\"layui-btn\" onclick=\"dailNumer('"+content[i].phone+"',"+content[i].enabled+")\"><i class=\"layui-icon\"></i>拨号"+
                         "            </td>");
                     $row.appendTo($("#tbd"));
 
@@ -90,13 +86,32 @@ function sendSearch(url ,params){
 
 }
 function dataLoad(){
-    var url="/ip/iplist";
+    var url="/mobile/mobileList";
     var params={};
     sendSearch(url,params);
 
 }
 
+function dailNumer(phone,enabled) {
+    var layer = layui.layer;
+    var params ={phone:phone};
+    var url="/mobile/dial";
+    $.ajax({
+        url: url,
+        data: params,//参数列表,
+        type: "post",
+        dataType:"json",
+        success: function (result) {
+            layer.msg('正在拨号!', {icon: 1, time: 1000});
+        },
+        error:function () {
 
+            layer.msg('拨号失败!', {icon: 1, time: 1000});
+        }
+    });
+
+
+}
 function handlePage(result){
     var pageTotal= result.totalPages;//总页数
     var currentPage = result.number+1;//当前页
@@ -154,24 +169,21 @@ function handlePage(result){
 }
 
 
-function addIpInfo(){
+function addMobileInfo(){
     var layer = layui.layer;
-    var ipAddr = $("#ipAddr").val();
-    var ipName = $("#ipName").val();
+
+    var phoneName = $("#mobileName").val();
+    var phone = $("#mobileNumber").val();
     var enabled= $("#enabled").val();
-    if(ipAddr ==null || ''==ipAddr || ipName ==null || ''==ipName){
-        alert("请填写IP信息");
+    if(phoneName ==null || ''==phoneName || phone ==null || ''==phone){
+        alert("请填写电话信息");
         return;
     }
-   // var b= validateIp(ipAddr);
-   //  if(!b){
-   //      alert("请填写正确的IP信息");
-   //      return ;
-   //  }
 
-    var params = {ipAddr:ipAddr,ipName:ipName,enabled:enabled};
 
-    var url="/ip/save";
+    var params = {phoneName:phoneName,phone:phone,enabled:enabled};
+
+    var url="/mobile/save";
     $.ajax({
         url: url,
         data: params,//参数列表,
@@ -181,6 +193,7 @@ function addIpInfo(){
             if(result !=null){
                 layer.alert("增加成功", {icon: 6},function () {
                     var index = parent.layer.getFrameIndex(window.name);
+                    parent.location.reload();
                     //关闭当前frame
                     parent.layer.close(index);
                 });
@@ -192,13 +205,13 @@ function addIpInfo(){
 
 }
 
-function ipInfoUpdate(){
-    var ipAddr= $("#ipAddr").val();
-    var ipName=$("#ipName").val();
-    var enabled = $("#enabled").val();
+function mobileInfoUpdate(){
+    var phoneName = $("#mobileName").val();
+    var phone = $("#mobileNumber").val();
+    var enabled= $("#enabled").val();
     var id = $("#id").val();
-    var params ={id:id,ipAddr:ipAddr,ipName:ipName,enabled:enabled};
-    var url ="/ip/update";
+    var params ={id:id,phoneName:phoneName,phone:phone,enabled:enabled};
+    var url ="/mobile/update";
     $.ajax({
         url: url,
         data: params,//参数列表,
@@ -221,11 +234,11 @@ function ipInfoUpdate(){
 }
 
 
-function deleteIpInfo(obj,id){
+function deleteMobileInfo(obj,id){
     var layer= layui.layer;
     layer.confirm('确认要删除吗？',function(index){
 
-        var url="/ip/delete/"+id;
+        var url="/mobile/delete/"+id;
         $.ajax({
             url: url,
             type: "post",

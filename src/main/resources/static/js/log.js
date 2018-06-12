@@ -2,9 +2,10 @@ $(function(){
 
     $("#searchFilter").click(function(){
 
-       / var ipAddr = $("#ipAddr").val();
-       // var ipName = $("#ipName").val();
-       // var params={ipAddr:ipAddr,ipName:ipName};
+        var content = $("#content").val();
+        var start = $("#start").val();
+        var end = $("#end").val()
+        var params={content:content,start:start,end:end};
         var url="/log/logList";
         sendSearch(url,params);
     });
@@ -13,9 +14,11 @@ $(function(){
 
 function pageSearch(cpg) {
 
-    //var ipAddr = $("#ipAddr").val();
-   / var ipName = $("#ipName").val();
-  //  var params={ipAddr:ipAddr,ipName:ipName,page:cpg};
+    var content = $("#content").val();
+    var start = $("#start").val();
+    var end = $("#end").val()
+   var params={content:content,start:start,end:end,page:cpg};
+
     var url="/log/logList";
     sendSearch(url,params);
 
@@ -99,7 +102,7 @@ function handlePage(result){
         if(pageTotal>3){
 
             if(currentPage<=3){
-                for(var i=0;i<=3;i++){
+                for(var i=1;i<=3;i++){
                     if(i==currentPage){
                         $div.append(" <a class=\"num\" class=\"current\" href=\"javascript:void(0)\">"+i+"</a>");
                     }else{
