@@ -28,6 +28,7 @@ public class BussinessLog implements Serializable {
     @Column(name="type")
     private Integer type;
     //日志产生时间
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name="createtime")
     private Date createtime;
     //所属地区

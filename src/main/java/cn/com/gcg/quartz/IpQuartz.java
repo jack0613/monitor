@@ -75,7 +75,7 @@ public class IpQuartz {
             if(2==type){
                 //查询当前IP下的所有电话号码
 
-                List<MobileConfig> mobiles = mobileRepository.findByAreacode(ip.getAreacode());
+                List<MobileConfig> mobiles = mobileRepository.findByAreacodeAAndEnabled(ip.getAreacode(),1);
 
                 if(mobiles!=null && mobiles.size()>0){
                     for(MobileConfig mobile:mobiles){

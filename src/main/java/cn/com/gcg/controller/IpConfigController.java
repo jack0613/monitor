@@ -32,9 +32,12 @@ public class IpConfigController {
      * @return
      */
     @RequestMapping("/ip/iplist")
-    public Object ipList(final IpConfig ipConfig, @RequestParam(defaultValue = "1") Integer page , @RequestParam(defaultValue = "10") Integer size){
+    public Object ipList(final IpConfig ipConfig, @RequestParam(defaultValue = "1") Integer page , @RequestParam(defaultValue = "10") Integer size,HttpServletRequest request){
 
         page = page-1;
+
+        final User user = (User)request.getSession().getAttribute("loginUser");
+        final String areacode = user.getAreacode();
         Specification<IpConfig> specification = new Specification<IpConfig>() {
             @Override
             public Predicate toPredicate(Root<IpConfig> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -53,6 +56,11 @@ public class IpConfigController {
 
                         predicates.add(predicate);
                     }
+
+                    Predicate predicate = cb.equal(root.get("areacode").as(String.class),areacode);
+                    predicates.add(predicate);
+
+
                 }
 
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));

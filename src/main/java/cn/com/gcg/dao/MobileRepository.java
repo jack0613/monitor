@@ -13,5 +13,5 @@ import java.util.List;
  */
 public interface MobileRepository extends JpaRepository<MobileConfig,Long>,JpaSpecificationExecutor<MobileConfig>{
 
-    public List<MobileConfig> findByAreacode(String areacode);
+    public List<MobileConfig> findByAreacodeAAndEnabled(String areacode,Integer enabled);
 }
