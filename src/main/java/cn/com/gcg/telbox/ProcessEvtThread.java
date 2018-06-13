@@ -218,19 +218,25 @@ public class ProcessEvtThread extends Thread {
 						//int i32PlayFileHandle = BriSDKLib.QNV_PlayFile(0, BriSDKLib.QNV_PLAY_FILE_START, 0, BriSDKLib.PLAYFILE_MASK_REPEAT, projectPath + "\\static\\wav\\warn.wav");
 
 						//Jack 设置播放语音 默认暂停 播放一次
-						int i32PlayFileHandle = BriSDKLib.QNV_PlayFile(0, BriSDKLib.QNV_PLAY_FILE_START, 0, BriSDKLib.PLAYFILE_MASK_PAUSE, projectPath + "\\static\\wav\\ipwarn.wav");
+						//int i32PlayFileHandle = BriSDKLib.QNV_PlayFile(0, BriSDKLib.QNV_PLAY_FILE_START, 0, BriSDKLib.PLAYFILE_MASK_PAUSE, projectPath + "\\static\\wav\\ipwarn.wav");
 
 						//Jack 设置恢复播放语音
-						int status = BriSDKLib.QNV_PlayFile(0,BriSDKLib.QNV_PLAY_FILE_RESUME,i32PlayFileHandle,0,"");
+						int status = BriSDKLib.QNV_PlayFile(0,BriSDKLib.QNV_PLAY_FILE_RESUME,BriSDKLib.DIAL_STATUS,0,"");
 
 						if (status < 0) {
 							System.out.println("Jack-----:拨号后语音播放失败");
 						} else {
 							System.out.println("Jack-----:拨号后语音播放成功");
 						}
-					}
+						//播音后初始化电话拨号状态
+						BriSDKLib.DIAL_STATUS = 0;
+
+						//设置接通状态
+						BriSDKLib.CONNECT_STATUS = 999;
 
 					}
+
+				}
 				break;
 				case BriSDKLib.BriEvent_RemoteHang: {
 					if (BriSDKLib.HOOK_POLARITY == lResult) {

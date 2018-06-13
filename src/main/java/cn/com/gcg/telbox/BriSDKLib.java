@@ -17,6 +17,12 @@ public class BriSDKLib {
 	public final static int TRUE = 1;// 表示真值
 	public final static int FASLE = 0;// 表示假值
 
+	//Jack 拨号状态
+	public static int DIAL_STATUS = 0;
+
+	//Jack 接通状态
+	public static int CONNECT_STATUS = -1;
+
 	public final static int QNV_DLL_VER = 0x104;// 动态库版本
 	public static String QNV_DLL_VER_STR = "1.04";
 

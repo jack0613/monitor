@@ -1,5 +1,10 @@
 package cn.com.gcg.telbox;
 
+import org.springframework.util.ResourceUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /**
  * Created by Jack on 2018/6/10.
  */
@@ -13,7 +18,22 @@ public class Dial {
      * @data: 2018/6/10 18:51
      * @return：null
      */
-    public static void dial(String phoneNumber){
+    public static void dial(String phoneNumber,String playFile){
+
+        File path = null;
+        try {
+            path = new File(ResourceUtils.getURL("classpath:").getPath());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        //项目路径
+        String projectPath = "";
+        if(path != null){
+            projectPath = path.getAbsolutePath();
+        }
+
+        //添加通道和出局号
+        phoneNumber = "dial 0 0," + phoneNumber;
 
         String[] strline = phoneNumber.split("(\\s* \\s*)|(\\s*and\\s*)");
         if (strline.length != 3) {
@@ -35,6 +55,12 @@ public class Dial {
             }
             if (bFlag) {
                 // BriSDKLib.QNV_SetDevCtrl(iCh,BriSDKLib.QNV_CTRL_PLAYTOLINE,1);//自动打开播放语音到LINE,驱动会自动根据摘挂机状态打开关闭控制
+
+                //Jack 设置播放语音 默认暂停 播放一次
+                //BriSDKLib.DIAL_STATUS = BriSDKLib.QNV_PlayFile(0, BriSDKLib.QNV_PLAY_FILE_START, 0, BriSDKLib.PLAYFILE_MASK_PAUSE, projectPath + "\\static\\wav\\ipwarn.wav");
+
+                BriSDKLib.DIAL_STATUS = BriSDKLib.QNV_PlayFile(0, BriSDKLib.QNV_PLAY_FILE_START, 0, BriSDKLib.PLAYFILE_MASK_PAUSE, projectPath + playFile);
+
                 //通道启用 拨打电话
                 BriSDKLib.QNV_SetDevCtrl(iCh,
                         BriSDKLib.QNV_CTRL_LINEOUT, 1);//

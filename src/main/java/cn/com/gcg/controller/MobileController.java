@@ -102,7 +102,7 @@ public class MobileController {
     @RequestMapping("/mobile/dial")
     public Boolean dialNumber(@RequestParam("phone") String phone){
 
-        Dial.dial(phone);
+        //Dial.dial(phone);
         return true;
     }
 
