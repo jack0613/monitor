@@ -128,7 +128,7 @@ function handlePage(result){
         if(pageTotal>3){
 
             if(currentPage<=3){
-                for(var i=0;i<=3;i++){
+                for(var i=1;i<=3;i++){
                     if(i==currentPage){
                         $div.append(" <a class=\"num\" class=\"current\" href=\"javascript:void(0)\">"+i+"</a>");
                     }else{
