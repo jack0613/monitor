@@ -12,6 +12,9 @@ import org.xvolks.jnative.pointers.memory.MemoryBlock;
 import org.xvolks.jnative.pointers.memory.MemoryBlockFactory;
 import org.xvolks.jnative.util.Callback;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BriSDKLib {
 	public final static int NULL = 0;// c++
 	public final static int TRUE = 1;// 表示真值
@@ -21,7 +24,7 @@ public class BriSDKLib {
 	public static int DIAL_STATUS = 0;
 
 	//Jack 接通状态
-	public static int CONNECT_STATUS = -1;
+	public static Map<String,Object> CONNECT_STATUS = new HashMap<String, Object>();
 
 	public final static int QNV_DLL_VER = 0x104;// 动态库版本
 	public static String QNV_DLL_VER_STR = "1.04";

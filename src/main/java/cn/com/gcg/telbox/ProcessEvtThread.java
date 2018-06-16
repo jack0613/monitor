@@ -231,8 +231,8 @@ public class ProcessEvtThread extends Thread {
 						//播音后初始化电话拨号状态
 						BriSDKLib.DIAL_STATUS = 0;
 
-						//设置接通状态
-						BriSDKLib.CONNECT_STATUS = 999;
+						//设置接通状态 Jack
+						BriSDKLib.CONNECT_STATUS.put(szData,"999");
 
 					}
 
