@@ -58,13 +58,17 @@ public class IpQuartz {
            String content ="";
            Integer type =1;
            if(res){
-               content=ip.getIpName()+":"+ip.getIpAddr()+" 与主机网络正常";
+               ip.setLastOnlinetime(sdf.format(new Date()));
+               ip.setStatus(1);
+               content=sdf.format(new Date())+":"+ip.getIpName()+":"+ip.getIpAddr()+" 与主机网络正常";
 
            }else {
-
-               content =ip.getIpName()+":"+ip.getIpAddr()+" 与主机网络不通";
+               //ip.setLastOnlinetime(sdf.format(new Date()));
+               ip.setStatus(0);
+               content =sdf.format(new Date())+":"+ip.getIpName()+":"+ip.getIpAddr()+" 与主机网络不通";
                type=2;
            }
+           ipConfigRepository.save(ip);
             BussinessLog log = new BussinessLog();
             log.setAreacode(ip.getAreacode());
             log.setContent(content);
