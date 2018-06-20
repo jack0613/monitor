@@ -188,7 +188,10 @@ function addMobileInfo(){
         alert("请填写电话信息");
         return;
     }
-
+    if(!validateMobile(phone)){
+        alert("请输入正确的电话号码或手机号！");
+        return;
+    }
 
     var params = {phoneName:phoneName,phone:phone,enabled:enabled};
 
