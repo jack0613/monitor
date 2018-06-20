@@ -93,6 +93,10 @@ function dataLoad(){
 }
 
 function dailNumer(phone,enabled) {
+    if(enabled ==0){
+        alert("该号码被禁用！");
+        return;
+    }
     var layer = layui.layer;
     var params ={phone:phone};
     var url="/mobile/dial";
@@ -102,7 +106,12 @@ function dailNumer(phone,enabled) {
         type: "post",
         dataType:"json",
         success: function (result) {
-            layer.msg('正在拨号!', {icon: 1, time: 1000});
+            if(result){
+                layer.msg('拨号成功!', {icon: 1, time: 1000});
+            }else{
+                layer.msg('拨号失败!', {icon: 1, time: 1000});
+            }
+
         },
         error:function () {
 
@@ -210,6 +219,10 @@ function mobileInfoUpdate(){
     var phone = $("#mobileNumber").val();
     var enabled= $("#enabled").val();
     var id = $("#id").val();
+    if(!validateMobile(phone)){
+        alert("请输入正确的电话号码或手机号！");
+        return;
+    }
     var params ={id:id,phoneName:phoneName,phone:phone,enabled:enabled};
     var url ="/mobile/update";
     $.ajax({
@@ -254,9 +267,13 @@ function deleteMobileInfo(obj,id){
 
     });
 }
-function validateIp(ip) {
-    var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
-    return reg.test(ip);
+function validateMobile(mobile) {
+    //var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
+   var regMobile = /^1\d{10}$/;
+   var regTel = /^0\d{2,3}-?\d{7,8}$/;
+
+
+    return (regMobile.test(mobile)||regTel.test(mobile));
 
 }
 

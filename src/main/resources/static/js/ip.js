@@ -163,6 +163,11 @@ function addIpInfo(){
         alert("请填写IP信息");
         return;
     }
+    if(!validateIp(ip)){
+        alert("请填写正确的IP地址");
+        return;
+
+    }
    // var b= validateIp(ipAddr);
    //  if(!b){
    //      alert("请填写正确的IP信息");
@@ -242,8 +247,13 @@ function deleteIpInfo(obj,id){
     });
 }
 function validateIp(ip) {
-    var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/
-    return reg.test(ip);
+    var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+    var reg = ip.match(exp);
+    if(reg==null){
+       return false;
+    }else {
+        return true;
+    }
 
 }
 
