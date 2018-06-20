@@ -80,6 +80,7 @@ public class IpQuartz {
                 if(mobiles!=null && mobiles.size()>0){
                     for(MobileConfig mobile:mobiles){
                         //Dial.dial(mobile.getPhone());
+                        Dial.dial(mobile.getPhone(),"\\static\\wav\\ipwarn.wav");
                     }
                 }
 
