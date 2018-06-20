@@ -4,6 +4,7 @@ import cn.com.gcg.dao.MobileRepository;
 import cn.com.gcg.model.IpConfig;
 import cn.com.gcg.model.MobileConfig;
 import cn.com.gcg.model.User;
+import cn.com.gcg.telbox.BriSDKLib;
 import cn.com.gcg.telbox.Dial;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +104,20 @@ public class MobileController {
     public Boolean dialNumber(@RequestParam("phone") String phone){
 
         //Dial.dial(phone);
-        return true;
+        Dial.dial(phone,"\\static\\wav\\ipwarn.wav");
+
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Object o = BriSDKLib.CONNECT_STATUS.get(phone);
+        if(o !=null ){
+            BriSDKLib.CONNECT_STATUS.remove(phone);
+            return true;
+        }
+        return false;
     }
 
 }
