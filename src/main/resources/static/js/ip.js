@@ -163,7 +163,7 @@ function addIpInfo(){
         alert("请填写IP信息");
         return;
     }
-    if(!validateIp(ip)){
+    if(!validateIp(ipAddr)){
         alert("请填写正确的IP地址");
         return;
 
@@ -202,6 +202,11 @@ function ipInfoUpdate(){
     var ipName=$("#ipName").val();
     var enabled = $("#enabled").val();
     var id = $("#id").val();
+    if(!validateIp(ipAddr)){
+        alert("请填写正确的IP地址");
+        return;
+
+    }
     var params ={id:id,ipAddr:ipAddr,ipName:ipName,enabled:enabled};
     var url ="/ip/update";
     $.ajax({
