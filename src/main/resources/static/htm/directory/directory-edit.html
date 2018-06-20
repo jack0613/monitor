@@ -44,8 +44,11 @@
                     $("#monitorTime").val(result.monitorTime);
                     $("#areacode").val(result.areacode);
 
-                    var select = 'dd[lay-value=' + result.enabled + ']';
-                    $('#enabled').siblings("div.layui-form-select").find('dl').find(select).click();
+                    var enabled = 'dd[lay-value=' + result.enabled + ']';
+                    $('#enabled').siblings("div.layui-form-select").find('dl').find(enabled).click();
+
+                    var fileexist = 'dd[lay-value=' + result.fileexist + ']';
+                    $('#fileexist').siblings("div.layui-form-select").find('dl').find(fileexist).click();
                     ///  alert($("#enabled").val());
 
                 }
@@ -107,6 +110,20 @@
 
                     <option value="1">是</option>
                     <option value="0">否</option>
+                </select>
+
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label for="fileexist" class="layui-form-label">
+                <span class="x-red">*</span>启用
+            </label>
+            <div class="layui-input-inline">
+                <select id="fileexist" name="fileexist" autocomplete="off" class="layui-input">
+
+                    <option value="1">文件存在告警</option>
+                    <option value="0">文件不存在告警</option>
                 </select>
 
             </div>

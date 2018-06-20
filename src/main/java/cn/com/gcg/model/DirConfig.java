@@ -31,6 +31,9 @@ public class DirConfig implements Serializable {
     @Column(name="enabled")
     private Integer enabled;
 
+    @Column(name="fileexist")
+    private Integer fileExist;
+
     @Column(name="areacode")
     private String areacode;
 
