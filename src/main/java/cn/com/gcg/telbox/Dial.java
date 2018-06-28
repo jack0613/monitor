@@ -33,9 +33,10 @@ public class Dial {
         }
 
         //添加通道和出局号
-        phoneNumber = "dial 0 0," + phoneNumber;
+        phoneNumber = "dial 0 " + phoneNumber;
 
         String[] strline = phoneNumber.split("(\\s* \\s*)|(\\s*and\\s*)");
+        System.out.println("拨号号码 ：" + phoneNumber);
         if (strline.length != 3) {
             System.out
                     .println("命令格式错误，这里是3个参数!如dial 0 9,13017471120 其中9是出局号");

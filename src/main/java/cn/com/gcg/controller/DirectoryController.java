@@ -2,9 +2,7 @@ package cn.com.gcg.controller;
 
 import cn.com.gcg.dao.DirConfigRepository;
 import cn.com.gcg.model.DirConfig;
-import cn.com.gcg.model.IpConfig;
 import cn.com.gcg.model.User;
-import cn.com.gcg.telbox.BriSDKLib;
 import cn.com.gcg.telbox.Dial;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,17 +44,16 @@ public class DirectoryController {
     public Object dirList(final DirConfig dirConfig, @RequestParam(defaultValue = "1") Integer page , @RequestParam(defaultValue = "10") Integer size,HttpServletRequest request){
         page = page - 1;
 
-        /*Dial.dial("15101139713","\\static\\wav\\ipwarn.wav");
+        Dial.dial("0,15101139713","\\static\\wav\\ipwarn.wav");
 
-        try {
+        /*try {
             Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        System.out.println("接通状态：" + BriSDKLib.CONNECT_STATUS);
+        System.out.println("接通状态：" + BriSDKLib.CONNECT_STATUS);*/
 
-        BriSDKLib.CONNECT_STATUS = -1;*/
 
         //绑定当前登录用户的地区
         final User user = (User) request.getSession().getAttribute("loginUser");

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../css/font.css">
 	<link rel="stylesheet" href="../css/xadmin.css">
     <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../js/xadmin.js"></script>
     <script type="text/javascript">
@@ -33,6 +34,10 @@
                 }
 
             })
+
+            var nickName = $.cookie("nickName");
+            $("#nickName").text(nickName);
+
         })
 
     </script>
@@ -48,14 +53,14 @@
 
         <ul class="layui-nav right" lay-filter="">
           <li class="layui-nav-item">
-            <a href="javascript:;">admin</a>
+            <a href="javascript:;"><span id="nickName"></span></a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
-              <dd><a onclick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
+              <!--<dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
+              <dd><a onclick="x_admin_show('切换帐号','http://www.baidu.com')">切换帐号</a></dd>-->
               <dd><a href="./login.html">退出</a></dd>
             </dl>
           </li>
-          <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
+         <!-- <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>-->
         </ul>
         
     </div>
@@ -74,9 +79,9 @@
                 <ul class="sub-menu">
                     <li>
                         <a _href="ip/ip-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
+                            <i class="iconfont">&#xe70b;</i>
                             <cite>IP管理</cite>
-                            
+
                         </a>
                     </li >
 

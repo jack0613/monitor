@@ -40,6 +40,7 @@ public class UserController {
         }else{
             request.getSession().setAttribute("loginUser",user);
             map.put("flag","success");
+            map.put("nickName",user.getNickName());
         }
         return map;
     }

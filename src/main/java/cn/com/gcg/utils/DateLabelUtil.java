@@ -21,10 +21,12 @@ public class DateLabelUtil {
      */
     public static String formatdate(String content){
         if (content != null) {
+
+
             //ssdwwq 正则表达 判断是否是整数（正整数、负整数）
             Pattern patt = Pattern.compile("(\\-|)[0-9]*");
 
-            Pattern p2 = Pattern.compile("【#d{1,}(\\+|-)[0-9]+#】|【#M{1,}(\\+|-)[0-9]+#】");
+            /*Pattern p2 = Pattern.compile("【#d{1,}(\\+|-)[0-9]+#】|【#M{1,}(\\+|-)[0-9]+#】");
             Matcher m2 = p2.matcher(content);
             while (m2.find()) {
                 String targetstr = m2.group();
@@ -60,7 +62,10 @@ public class DateLabelUtil {
 
             }
 
-            //ssdwwq 关联月日
+            }*/
+
+
+            /*//ssdwwq 关联月日
             Pattern p5 = Pattern.compile("【#M{1,}d{1,}(\\+|-|)[0-9]*#】");
             Matcher m5 = p5.matcher(content);
             while (m5.find()) {
@@ -113,9 +118,9 @@ public class DateLabelUtil {
                 //content = content.replaceAll(targetstr, new SimpleDateFormat("M月d日").format(cal.getTime()));
                 content = content.replace(targetstr, new SimpleDateFormat("yyyy年M月").format(cal.getTime()));
             }
+*/
 
-
-            //ssdwwq 关联年月日
+            /*//ssdwwq 关联年月日
             Pattern p9 = Pattern.compile("【#YyyyMm{1,}Dd{1,}(\\+|-|)[0-9]*#】");
             Matcher m9 = p9.matcher(content);
             while (m9.find()) {
@@ -272,7 +277,7 @@ public class DateLabelUtil {
                 content = content.replace("【#season#】", season);
                 content = content.replace("【#seasonMonth#】", seasonMonth);
 
-            }
+            }*/
 
 
             Date nowdate = new Date();
@@ -283,6 +288,19 @@ public class DateLabelUtil {
                 String formatstr = targetstr.substring(2, targetstr.length()-2);
                 content = content.replaceAll(targetstr, new SimpleDateFormat(formatstr).format(nowdate));
             }
+
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.HOUR_OF_DAY,-8);
+            Pattern p2 = Pattern.compile("【#UTy{1,}#】|【#UTM{1,}#】|【#UTd{1,}#】|【#UTH{1,}#】|【#UTm{1,}#】|【#UTs{1,}#】");
+            Matcher m2 = p2.matcher(content);
+            while (m2.find()) {
+                String targetstr = m2.group();
+                String formatstr = targetstr.substring(2, targetstr.length()-2);
+                content = content.replaceAll(targetstr, new SimpleDateFormat(formatstr.replace("UT","")).format(cal.getTime()));
+            }
+
         }
         return content;
     }

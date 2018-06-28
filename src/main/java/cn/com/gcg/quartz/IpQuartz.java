@@ -11,7 +11,6 @@ import cn.com.gcg.telbox.Dial;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import sun.plugin2.util.SystemUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +18,6 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author wzs

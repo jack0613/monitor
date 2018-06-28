@@ -166,7 +166,7 @@ function addDirInfo(){
    //      return ;
    //  }
 
-    var params = {filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,fileexist:fileexist};
+    var params = {filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,fileExist:fileexist};
 
     var url="/dir/save";
     $.ajax({
@@ -198,7 +198,7 @@ function dirInfoUpdate(){
     var monitorTime = $("#monitorTime").val();
     var id = $("#id").val();
     var fileexist = $("#fileexist").val();
-    var params ={filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,id:id,fileexist:fileexist};
+    var params ={filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,id:id,fileExist:fileexist};
     var url ="/dir/update";
     $.ajax({
         url: url,
@@ -251,7 +251,7 @@ function pathNameRule(){
         skin: 'layui-layer-rim', //加上边框
         area: ['420px', '240px'], //宽高
         content: '<html><body><h2>ftp路径规则：ftp://127.0.01{^}21{^}test{^}test{^}/directory' +
-        '</br>共享文件规则：\\\\127.0.0.1\\directory</br>本地磁盘：d:\\\\directory\\</h2></body></html>'
+        '</br>共享文件规则：smb://guest:1234@192.168.3.56/share/</br>本地磁盘：d:\\\\directory\\</h2></body></html>'
     });
 
 }

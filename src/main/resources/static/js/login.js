@@ -21,8 +21,11 @@ $(function () {
             success: function (result) {
                // alert("success");
                 if(result.flag=='success'){
-
+                    $.cookie("userName",userName);
+                    $.cookie("nickName",result.nickName);
                     location.href="/htm/index.html";
+
+
                 }else{
                     alert('用户名或密码错误');
                 }

@@ -185,6 +185,8 @@ function addIpInfo(){
         success: function (result) {
             if(result !=null){
                 layer.alert("增加成功", {icon: 6},function () {
+                    //重新加载列表
+                    window.parent.location.reload();
                     var index = parent.layer.getFrameIndex(window.name);
                     //关闭当前frame
                     parent.layer.close(index);
