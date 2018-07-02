@@ -15,6 +15,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
 server:
   port: 8080
   tomcat:

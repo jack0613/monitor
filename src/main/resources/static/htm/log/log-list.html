@@ -43,7 +43,14 @@
             <input class="layui-input" placeholder="开始日" name="start" id="start">
             <input class="layui-input" placeholder="截止日" name="end" id="end">
             <input type="text" name="content" id="content" placeholder="日志内容" autocomplete="off" class="layui-input">
+           <div class="layui-input-inline">
+            <select id ="logtype" name ="logtype" class="layui-input">
+                    <option value="">日志类型=</option>
+                    <option value="1">正常日志</option>
+                    <option value="2">故障日志</option>
 
+            </select>
+           </div>
             <button class="layui-btn" id="searchFilter"><i class="layui-icon">&#xe615;</i></button>
 
         </form>
@@ -73,14 +80,14 @@
         </tbody>
     </table>
     <div id="pageDiv" class="page">
-        <div>
+       <!-- <div>
             <a class="prev" href="javascript:void(0)">&lt;&lt;</a>
             <a class="num" href="">1</a>
             <span class="current">2</span>
             <a class="num" href="">3</a>
             <a class="num" href="">489</a>
             <a class="next" href="">&gt;&gt;</a>
-        </div>
+        </div>-->
     </div>
 
 </div>

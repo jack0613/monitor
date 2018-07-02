@@ -119,9 +119,18 @@ function handlePage(result){
                     }
                 }
             }else{
-                $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick=\"pageSearch("+(currentPage-1)+")\">currentPage-1</a>");
-                $div.append(" <a class=\"num\" class=\"current\" href=\"javascript:void(0)\" >currentPage</a>") ;
-                $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick=\"pageSearch("+(currentPage-1)+")\">currentPage+1</a>");
+                if(islastPage){
+                    $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick=\"pageSearch("+(currentPage-2)+")\">"+(currentPage-2)+"</a>");
+                    $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick=\"pageSearch("+(currentPage-1)+")\">"+(currentPage-1)+"</a>");
+
+                    $div.append(" <a class=\"num\" class=\"current\" href=\"javascript:void(0)\" >"+(currentPage)+"</a>") ;
+
+                }else{
+                    $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick=\"pageSearch("+(currentPage-1)+")\">"+(currentPage-1)+"</a>");
+                    $div.append(" <a class=\"num\" class=\"current\" href=\"javascript:void(0)\" >"+currentPage+"</a>") ;
+                    $div.append(" <a class=\"num\" href=\"javascript:void(0)\" onclick=\"pageSearch("+(currentPage+1)+")\">"+(currentPage+1)+"</a>");
+
+                }
             }
 
         }else{
