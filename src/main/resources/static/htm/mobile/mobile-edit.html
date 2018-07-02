@@ -23,8 +23,7 @@
     <script src="../../js/mobile.js"></script>
     <script>
 
-        $(function () {
-
+        function onLoad(){
             //alert(location.href);
             var h = location.href;
             var idstr = h.substring(h.indexOf("?") + 1);
@@ -50,14 +49,12 @@
 
                 }
             })
-
-
-        })
+        }
 
     </script>
 </head>
 
-<body>
+<body onload="onLoad()">
 <div class="x-body">
     <form onsubmit="return false;" class="layui-form">
         <input type="hidden" id="id" name="id">

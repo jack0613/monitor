@@ -84,7 +84,7 @@ public class DirectoryQuartz {
 
                     //判断路径为 FTP、共享文件夹、还是本地磁盘
                     if (directory != null && !dirConfig.equals("")) {
-                        String diskPattern = "[a-zA-Z]{1}:";
+                        String diskPattern = "[a-z|A-Z]{1}:[\\s\\S]*";
 
                         if (directory.startsWith("ftp") || directory.startsWith("FTP")) {
                             //ftp 目录处理方式

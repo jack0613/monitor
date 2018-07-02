@@ -23,9 +23,7 @@
     <script src="../../js/ip.js"></script>
     <script>
 
-        $(function () {
-
-            //alert(location.href);
+       function onLoad(){
             var h = location.href;
             var idstr = h.substring(h.indexOf("?") + 1);
             //alert(idstr);
@@ -34,6 +32,7 @@
 
             $.ajax({
                 url: url,
+                async : false,
                 // data: params,//参数列表,
                 type: "post",
                 dataType: "json",
@@ -50,14 +49,13 @@
 
                 }
             })
+        }
 
-
-        })
 
     </script>
 </head>
 
-<body>
+<body onload="onLoad()">
 <div class="x-body">
     <form onsubmit="return false;" class="layui-form">
         <input type="hidden" id="id" name="id">

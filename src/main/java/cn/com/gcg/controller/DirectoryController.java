@@ -149,6 +149,7 @@ public class DirectoryController {
             dirConfigNew.setFileName(dirConfig.getFileName());
             dirConfigNew.setFilePath(dirConfig.getFilePath());
             dirConfigNew.setFileExist(dirConfig.getFileExist());
+            dirConfigNew.setMonitorTime(dirConfig.getMonitorTime());
             dir = dirConfigRepository.save(dirConfigNew);
         }
         return dir;

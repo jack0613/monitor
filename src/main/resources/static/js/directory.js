@@ -216,9 +216,9 @@ function dirInfoUpdate(){
         dataType:"json",
         success: function (result) {
             if(result !=null){
-                //重新加载列表
-                window.parent.location.reload();
                 layer.alert("修改成功", {icon: 6},function () {
+                    //重新加载列表
+                    window.parent.location.reload();
                     var index = parent.layer.getFrameIndex(window.name);
                     //关闭当前frame
                     parent.layer.close(index);

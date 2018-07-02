@@ -22,8 +22,7 @@
     <![endif]-->
     <script>
 
-        $(function () {
-
+        function onLoad(){
             //alert(location.href);
             var h = location.href;
             var idstr = h.substring(h.indexOf("?") + 1);
@@ -53,14 +52,12 @@
 
                 }
             })
-
-
-        })
+        }
 
     </script>
 </head>
 
-<body>
+<body onload="onLoad()">
 <div class="x-body">
     <form class="layui-form" onsubmit="return false;">
         <input type="hidden" id="id" name="id">
