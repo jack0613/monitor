@@ -161,6 +161,7 @@ function addDirInfo(){
     var monitorTime= $("#monitorTime").val();
     var enabled= $("#enabled").val();
     var fileexist= $("#fileexist").val();
+    var delayTime= $("#delayTime").val();
     if(pathName == null || '' == pathName || fileName == null || '' == fileName){
         alert("请填写目录信息");
         return;
@@ -175,7 +176,7 @@ function addDirInfo(){
    //      return ;
    //  }
 
-    var params = {filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,fileExist:fileexist};
+    var params = {filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,fileExist:fileexist,delayTime:delayTime};
 
     var url="/dir/save";
     $.ajax({
@@ -207,7 +208,16 @@ function dirInfoUpdate(){
     var monitorTime = $("#monitorTime").val();
     var id = $("#id").val();
     var fileexist = $("#fileexist").val();
-    var params ={filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,id:id,fileExist:fileexist};
+    var delayTime = $("#delayTime").val();
+    if(pathName == null || '' == pathName || fileName == null || '' == fileName){
+        alert("请填写目录信息");
+        return;
+    }
+    if(monitorTime == null || monitorTime == ""){
+        alert("请填写时间间隔信息");
+        return;
+    }
+    var params ={filePath:pathName,fileName:fileName,monitorTime:monitorTime,enabled:enabled,id:id,fileExist:fileexist,delayTime:delayTime};
     var url ="/dir/update";
     $.ajax({
         url: url,

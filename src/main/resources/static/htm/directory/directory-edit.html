@@ -42,6 +42,7 @@
                     $("#fileName").val(result.fileName);
                     $("#monitorTime").val(result.monitorTime);
                     $("#areacode").val(result.areacode);
+                    $("#delayTime").val(result.delayTime);
 
                     var enabled = 'dd[lay-value=' + result.enabled + ']';
                     $('#enabled').siblings("div.layui-form-select").find('dl').find(enabled).click();
@@ -123,6 +124,16 @@
                     <option value="0">文件不存在告警</option>
                 </select>
 
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label for="fileexist" class="layui-form-label">
+                延迟时间
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="delayTime" name="delayTime" required=""
+                       autocomplete="off" class="layui-input" placeholder="毫秒(整数)">
             </div>
 
         </div>

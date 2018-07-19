@@ -43,4 +43,7 @@ public class DirConfig implements Serializable {
     @Column(name="last_onlinetime")
     private String lastOnlinetime;
 
+    @Column(name="delay_time")
+    private Integer delayTime;
+
 }

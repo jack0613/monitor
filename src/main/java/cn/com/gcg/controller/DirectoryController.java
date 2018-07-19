@@ -44,7 +44,7 @@ public class DirectoryController {
     public Object dirList(final DirConfig dirConfig, @RequestParam(defaultValue = "1") Integer page , @RequestParam(defaultValue = "10") Integer size,HttpServletRequest request){
         page = page - 1;
 
-        Dial.dial("0,15101139713","\\static\\wav\\ipwarn.wav");
+       /* Dial.dial("0,15101139713","\\static\\wav\\ipwarn.wav");*/
 
         /*try {
             Thread.sleep(15000);
@@ -150,6 +150,7 @@ public class DirectoryController {
             dirConfigNew.setFilePath(dirConfig.getFilePath());
             dirConfigNew.setFileExist(dirConfig.getFileExist());
             dirConfigNew.setMonitorTime(dirConfig.getMonitorTime());
+            dirConfigNew.setDelayTime(dirConfig.getDelayTime());
             dir = dirConfigRepository.save(dirConfigNew);
         }
         return dir;

@@ -77,10 +77,16 @@ public class DirectoryQuartz {
                     //文件名称
                     String fileName = dirConfig.getFileName();
                     //替换日期标签
-                    fileName = DateLabelUtil.formatdate(fileName);
+                    //fileName = DateLabelUtil.formatdate(fileName);
+                    //采用任务配置减少时间计算
+                    if(dirConfig.getDelayTime() > 0 ){
+                        fileName = DateLabelUtil.formatdate(fileName,new Date(new Date().getTime() - dirConfig.getDelayTime()));
+                    }else{
+                        fileName = DateLabelUtil.formatdate(fileName);
+                    }
+
                     //文件是否存在
                     Integer fileExist = dirConfig.getFileExist();
-
 
                     //判断路径为 FTP、共享文件夹、还是本地磁盘
                     if (directory != null && !dirConfig.equals("")) {

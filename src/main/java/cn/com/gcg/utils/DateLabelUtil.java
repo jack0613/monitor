@@ -305,4 +305,37 @@ public class DateLabelUtil {
         return content;
     }
 
+    /**
+     * @author: Jack
+     * @data: 2018-6-19 11:31
+     * @param: content
+     * @description: 根据传入字符串转换日期标签
+     * @return：String
+     */
+    public static String formatdate(String content,Date nowdate){
+
+        if (content != null) {
+            Pattern p = Pattern.compile("【#y{1,}#】|【#M{1,}#】|【#d{1,}#】|【#H{1,}#】|【#m{1,}#】|【#s{1,}#】");
+            Matcher m = p.matcher(content);
+            while (m.find()) {
+                String targetstr = m.group();
+                String formatstr = targetstr.substring(2, targetstr.length()-2);
+                content = content.replaceAll(targetstr, new SimpleDateFormat(formatstr).format(nowdate));
+            }
+
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(nowdate);
+            cal.add(Calendar.HOUR_OF_DAY,-8);
+            Pattern p2 = Pattern.compile("【#UTy{1,}#】|【#UTM{1,}#】|【#UTd{1,}#】|【#UTH{1,}#】|【#UTm{1,}#】|【#UTs{1,}#】");
+            Matcher m2 = p2.matcher(content);
+            while (m2.find()) {
+                String targetstr = m2.group();
+                String formatstr = targetstr.substring(2, targetstr.length()-2);
+                content = content.replaceAll(targetstr, new SimpleDateFormat(formatstr.replace("UT","")).format(cal.getTime()));
+            }
+
+        }
+        return content;
+    }
 }
