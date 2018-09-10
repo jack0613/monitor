@@ -138,7 +138,7 @@ public class DirectoryQuartz {
                                         log.setCreatetime(new Date());
                                         logRepository.save(log);
                                         //查询当前地区下的所有电话号码
-                                        dail(dirConfig.getAreacode());
+                                        dail(dirConfig.getAreacode(),directory,fileName);
                                     }else if(fileExist == 0 && (filesMap == null || filesMap.size() == 0)){//文件不存在告警
                                         //System.out.println("文件不存在告警");
                                         //写入日志
@@ -149,7 +149,7 @@ public class DirectoryQuartz {
                                         log.setCreatetime(new Date());
                                         logRepository.save(log);
                                         //查询当前地区下的所有电话号码
-                                        dail(dirConfig.getAreacode());
+                                        dail(dirConfig.getAreacode(),directory,fileName);
                                     }else{
                                         //System.out.println("不告警：");
                                         String content = "监测到FTP任务,未发生告警：路径：" + path + ",文件名：" + fileName;
@@ -171,7 +171,7 @@ public class DirectoryQuartz {
                                     log.setCreatetime(new Date());
                                     logRepository.save(log);
                                     //查询当前地区下的所有电话号码
-                                    dail(dirConfig.getAreacode());
+                                    dail(dirConfig.getAreacode(),directory,fileName);
                                 }
 
                             }
@@ -211,7 +211,7 @@ public class DirectoryQuartz {
                                 log.setCreatetime(new Date());
                                 logRepository.save(log);
                                 //查询当前地区下的所有电话号码
-                                dail(dirConfig.getAreacode());
+                                dail(dirConfig.getAreacode(),directory,fileName);
                             }else if(fileExist == 0 && (filesMap == null || filesMap.size() == 0)){//文件不存在告警
                                 //System.out.println("文件不存在告警");
                                 //写入日志
@@ -222,7 +222,7 @@ public class DirectoryQuartz {
                                 log.setCreatetime(new Date());
                                 logRepository.save(log);
                                 //查询当前地区下的所有电话号码
-                                dail(dirConfig.getAreacode());
+                                dail(dirConfig.getAreacode(),directory,fileName);
                             }else{
                                 //System.out.println("不告警：");
                                 String content = "监测到本地磁盘任务，未发生告警：路径：" + directory + ",文件名：" + fileName;
@@ -244,7 +244,7 @@ public class DirectoryQuartz {
     }
 
 
-    private void dail(String areacode){
+    private void dail(String areacode,String directory,String fileName){
         try{
             //查询当前地区下的所有电话号码
             List<MobileConfig> mobiles = mobileRepository.findByAreacodeAndEnabled(areacode,1);
@@ -253,6 +253,14 @@ public class DirectoryQuartz {
                 for(MobileConfig mobile:mobiles){
                     //Dial.dial(mobile.getPhone());
                     Dial.dial(mobile.getPhone(),"\\static\\wav\\filewarn.wav");
+
+                    String content = "监测到本地磁盘任务，文件存在告警：路径：" + directory + ",文件名：" + fileName;
+                    BussinessLog log = new BussinessLog();
+                    log.setAreacode(areacode);
+                    log.setContent(content);
+                    log.setCreatetime(new Date());
+                    log.setType(3);//Jack 3为拨号记录
+                    logRepository.save(log);
                 }
             }
 

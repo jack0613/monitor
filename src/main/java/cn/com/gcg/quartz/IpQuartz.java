@@ -1,13 +1,11 @@
 package cn.com.gcg.quartz;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import cn.com.gcg.dao.IpConfigRepository;
 import cn.com.gcg.dao.LogRepository;
 import cn.com.gcg.dao.MobileRepository;
 import cn.com.gcg.model.BussinessLog;
 import cn.com.gcg.model.IpConfig;
 import cn.com.gcg.model.MobileConfig;
-import cn.com.gcg.telbox.Dial;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -33,6 +31,7 @@ public class IpQuartz {
 
     @Autowired
     private MobileRepository mobileRepository;
+
 
 //    @Scheduled(cron="0/10 * *  * * ? ")
 //    public void test(){
@@ -73,6 +72,7 @@ public class IpQuartz {
             log.setType(type);
             logRepository.save(log);
             //当type ==2 时 实现打电话通知
+            //Jack 修改为 延迟1分钟重新ping 如果不通再拨打
             if(2==type){
                 //查询当前IP下的所有电话号码
 
@@ -81,7 +81,21 @@ public class IpQuartz {
                 if(mobiles!=null && mobiles.size()>0){
                     for(MobileConfig mobile:mobiles){
                         //Dial.dial(mobile.getPhone());
-                        Dial.dial(mobile.getPhone(),"\\static\\wav\\ipwarn.wav");
+                        //Dial.dial(mobile.getPhone(),"\\static\\wav\\ipwarn.wav");
+
+                        RetryPingIp retryPingIp = new RetryPingIp(mobile.getPhone(),ip.getAreacode(),ip.getIpName(),logRepository,60000,ip.getIpAddr());
+                        Thread thread = new Thread(retryPingIp);
+                        thread.start();
+
+
+                        //Jack 同一拨打电话 插入到电话任务表中
+                        /*PhoneTaskConfig phoneTaskConfig = new PhoneTaskConfig();
+                        phoneTaskConfig.setAreaCode(ip.getAreacode());
+                        phoneTaskConfig.setCreateTime(new Date());
+                        phoneTaskConfig.setDataSource(0);
+                        phoneTaskConfig.setPhoneNumber(mobile.getPhone());
+                        phoneTaskConfig.setVoiceFile("\\static\\wav\\ipwarn.wav");
+                        phoneTaskRepository.save(phoneTaskConfig);*/
                     }
                 }
 
@@ -96,7 +110,7 @@ public class IpQuartz {
         Runtime r = Runtime.getRuntime();
         String pingCommand = "ping " + ipAddress ;
         try {   // 执行命令并获取输出
-            System.out.println(pingCommand);
+            //System.out.println(pingCommand);
             Process p = r.exec(pingCommand);
             if (p == null) {
                 return false;
@@ -107,7 +121,7 @@ public class IpQuartz {
             Boolean res = false;
             int i=1;
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+                //System.out.println(line);
                 if(i>10){
                     break;
                 }
@@ -118,7 +132,7 @@ public class IpQuartz {
                 }
                 i++;
             }   // 如果出现类似=23ms TTL=62这样的字样,出现的次数=测试次数则返回真
-            System.out.println(connectedCount);
+            //System.out.println(connectedCount);
             return res;
         } catch (Exception ex) {
             ex.printStackTrace();   // 出现异常则返回假
@@ -133,6 +147,30 @@ public class IpQuartz {
     }
 
     public static void main(String[] args) {
+        int trueNum = 0;
+        int falseNum = 0;
+
+        long l = System.currentTimeMillis();
+        long ll;
+        ll = l;
+        while (true){
+            if(ping("192.168.0.1")){
+                trueNum = trueNum + 1;
+            }else{
+                falseNum = falseNum + 1;
+            }
+            l = System.currentTimeMillis();
+            long d = l - ll;
+
+            if (d > 10000) {
+                System.out.println("倒计时结束！");
+                break;
+            }
+        }
+
+        System.out.println(trueNum + "-------");
+        System.out.println(falseNum + "=======");
+
 
     }
 }
